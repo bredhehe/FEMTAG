@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FE1MER TAG</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: black;
+      color: #ae00ff;
+      text-shadow: 0 0 10px #ae00ff;
+      overflow-x: hidden;
+    }
+
+    .header {
+      text-align: center;
+      margin-top: 60px;
+      margin-bottom: 40px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      color: white;
+      text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff;
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.8;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto);
+      gap: 20px;
+      padding: 0 40px;
+      justify-items: center;
+      animation: fadeInUp 2s ease-out;
+    }
+
+    .box {
+      width: 85%;
+      height: 220px;
+      background-color: #260038a6;
+      border: 3px solid #ae00ff;
+      border-radius: 16px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+      animation: floatUp 1.5s ease forwards;
+      cursor: pointer;
+    }
+
+    .box:hover {
+      transform: scale(1.08);
+      background-color: #260038a6;
+      box-shadow: 0 0 20px #ae00ff;
+    }
+
+    .box h2 {
+      font-size: 2.5rem;
+    }
+
+    .container .box:nth-child(5),
+    .container .box:nth-child(6) {
+      background-color: black;
+      border-color: black;
+      pointer-events: none;
+    }
+
+    .glow-button {
+      background: black;
+      border: 2px solid #ae00ff;
+      color: #ae00ff;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-shadow: 0 0 10px #ae00ff;
+      box-shadow: 0 0 20px #ae00ff;
+      margin: 20px auto;
+      display: block;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .glow-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px #ae00ff;
+    }
+
+    .staff-list {
+      text-align: center;
+      margin-top: 80px;
+      padding: 60px;
+      text-shadow: 0 0 10px #a600ff;
+      font-size: 2rem;
+      animation: fadeIn 2s ease-out;
+      font-style: italic;
+      text-decoration: underline;
+    }
+
+    .staff-list h3 {
+      margin-bottom: 10px;
+      font-size: 1.6rem;
+    }
+
+    .particles {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #ae00ff;
+      border-radius: 50%;
+      animation: rise 8s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+      }
+      100% {
+        transform: translateY(-10vh) scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: scale(0.9) translateY(50px);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1.05) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Modal styling and animations */
+    .modal-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(10px);
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+
+    .modal-bg.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background-color: #14001f;
+      border: 3px solid #ae00ff;
+      color: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 90%;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 0 30px #ae00ff;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .modal-bg.show .modal {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .modal h2 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    .modal p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #1a001f;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #ae00ff;
+      transition: transform 0.3s ease;
+    }
+
+    .close-btn:hover svg {
+      transform: scale(1.2);
+    }
+
+    /* Welcome overlay */
+    .welcome-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      backdrop-filter: blur(10px);
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      cursor: pointer;
+      user-select: none;
+      color: #ae00ff;
+      font-size: 3rem;
+      font-weight: 700;
+      text-shadow: 0 0 20px #ae00ff;
+      transition: opacity 0.5s ease;
+    }
+
+    .welcome-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <audio id="backgroundAudio" loop>
+    <source src="1.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="welcome-overlay" id="welcomeOverlay" aria-label="Welcome screen, click to start audio">
+    Welcome...
+  </div>
+
+  <div class="header">
+    <h1>Welcome to the Glow Grid</h1>
+    <p>Explore the sleek, glowing interface powered by modern design and motion.</p>
+  </div>
+
+  <div class="container">
+    <div class="box" onclick="openDownloadModal()"><h2>DOWNLOAD</h2></div>
+    <div class="box" onclick="openRulesModal()"><h2>RULES</h2></div>
+    <div class="box" onclick="window.open('https://discord.gg/f1mertag', '_blank')"><h2>DISCORD</h2></div>
+    <div class="box" onclick="window.open('https://bleppybio.vercel.app', '_blank')"><h2>SERVER ADMIN</h2></div>
+    <div class="box"><h2>MORE</h2></div>
+    <div class="box"><h2>SOON...</h2></div>
+  </div>
+
+  <div class="staff-list">
+    <h3>Staff!</h3>
+    <p>OWNER: F1MER</p>
+    <p>WEB ADMIN AND BEST DEV: BLEPPY</p>
+    <p>LAZY BOY: MITRIX</p>
+  </div>
+
+  <!-- Download Modal -->
+  <div class="modal-bg" id="downloadModalBg">
+    <div class="modal">
+      <button class="close-btn" onclick="closeDownloadModal()" aria-label="Close download modal">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M18 6L6 18M6 6l12 12" stroke="#ae00ff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <h2>DOWNLOAD</h2>
+      <p>
+        Thank you for your interest!<br />
+        The download will be available soon.<br />
+        Stay tuned for updates.
+      </p>
+    </div>
+  </div>
+
+  <!-- Rules Modal -->
+  <div class="modal-bg" id="rulesModalBg">
+    <div class="modal">
+      <button class="close-btn" onclick="closeRulesModal()" aria-label="Close rules modal">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M18 6L6 18M6 6l12 12" stroke="#ae00ff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <h2>RULES</h2>
+      <p>
+        1. Be respectful<br />
+        2. No cheating or exploiting<br />
+        3. Keep it fun and fair<br />
+        4. Follow Discord TOS<br />
+        5. Mods have final say
+      </p>
+    </div>
+  </div>
+
+  <div class="particles"></div>
+
+  <script>
+    const particlesContainer = document.querySelector('.particles');
+    for (let i = 0; i < 100; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      p.style.left = `${Math.random() * 100}%`;
+      p.style.animationDuration = `${4 + Math.random() * 4}s`;
+      p.style.opacity = Math.random();
+      p.style.animationDelay = `${Math.random() * 5}s`;
+      particlesContainer.appendChild(p);
+    }
+
+    function openRulesModal() {
+      document.getElementById('rulesModalBg').classList.add('show');
+    }
+
+    function closeRulesModal() {
+      document.getElementById('rulesModalBg').classList.remove('show');
+    }
+
+    function openDownloadModal() {
+      document.getElementById('downloadModalBg').classList.add('show');
+    }
+
+    function closeDownloadModal() {
+      document.getElementById('downloadModalBg').classList.remove('show');
+    }
+
+    // Audio and welcome overlay control
+    const welcomeOverlay = document.getElementById('welcomeOverlay');
+    const backgroundAudio = document.getElementById('backgroundAudio');
+
+    welcomeOverlay.addEventListener('click', () => {
+      backgroundAudio.play().catch(() => {
+        // Handle play error if needed
+      });
+      // Fade out and hide the welcome overlay
+      welcomeOverlay.classList.add('hidden');
+      setTimeout(() => {
+        welcomeOverlay.style.display = 'none';
+      }, 500);
+    });
+  </script>
+</body>
+</html>
